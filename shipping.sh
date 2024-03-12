@@ -14,6 +14,7 @@ curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shippin
 echo -e "\e[36m>>>>>>>>>>extract app<<<<<<<<<\e[0m"
 cd /app
 
+
 echo -e "\e[36m>>>>>>>>>>unzip shipping <<<<<<<<<\e[0m"
 unzip /tmp/shipping.zip
 
