@@ -34,7 +34,7 @@ mysql -h mysql-dev.devopz1.online -uroot -pRoboShop@1 < /app/schema/shipping.sql
 systemctl restart shipping
 
 echo -e "\e[36m>>>>>>>>>>setup systemd service<<<<<<<<<\e[0m"
-cp /home/centos/Roboshop/shipping.service /etc/systemd/system/shipping.service
+cp ${script_path}/shipping.service /etc/systemd/system/shipping.service
 
 echo -e "\e[36m>>>>>>>>>>start shipping service<<<<<<<<<\e[0m"
 systemctl daemon-reload
