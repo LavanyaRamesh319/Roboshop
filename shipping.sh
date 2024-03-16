@@ -1,6 +1,7 @@
 script=$(real_path "$0")
 script_path=$(dirname "$script")
 source ${script_path}/common.sh
+mysql_root_password=$1
 
 echo -e "\e[36m>>>>>>>>>> Install Maven<<<<<<<<<\e[0m"
 dnf install maven -y
@@ -30,7 +31,7 @@ echo -e "\e[36m>>>>>>>>>>install mysql<<<<<<<<<\e[0m"
 dnf install mysql -y
 
 echo -e "\e[36m>>>>>>>>>>Load schema<<<<<<<<<\e[0m"
-mysql -h mysql-dev.devopz1.online -uroot -pRoboShop@1 < /app/schema/shipping.sql
+mysql -h mysql-dev.devopz1.online -uroot -p${mysql_root_password} < /app/schema/shipping.sql
 systemctl restart shipping
 
 echo -e "\e[36m>>>>>>>>>>setup systemd service<<<<<<<<<\e[0m"
