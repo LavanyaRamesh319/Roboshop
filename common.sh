@@ -2,38 +2,52 @@ app_user=roboshop
 script=$(realpath "$0")
 script_path=$(dirname "$script")
 
+print_head() {
+  echo -e "\e[36m>>>>>>>>>> $1 <<<<<<<<<<\e[0m"
+}
+
+schema_setup(){
+  echo -e "\e[36m>>>>>>>>>> Copy mongodb repo <<<<<<<<<<\e[0m"
+  cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
+
+  echo -e "\e[36m>>>>>>>>>> Install mongodb <<<<<<<<<<\e[0m"
+  dnf install mongodb-org-shell -y
+
+  echo -e "\e[36m>>>>>>>>>> Load schema <<<<<<<<<<\e[0m"
+  mongo --host mongodb-dev.devopz1.online </app/schema/${component}.js
+}
 func_nodejs(){
-  echo -e "\e[36m>>>>>>>>>> Configuring Nodejs repos <<<<<<<<<<\e[0m"
+print_head "Configuring Nodejs repos"
   dnf module disable nodejs -y
   dnf module enable nodejs:18 -y
 
-  echo -e "\e[36m>>>>>>>>>> Install Nodejs <<<<<<<<<<\e[0m"
+print_head "Install Nodejs"
   dnf install nodejs -y
 
-  echo -e "\e[36m>>>>>>>>>> add application user <<<<<<<<<<\e[0m"
+print_head "add application user"
   useradd ${app_user}
 
-  echo -e "\e[36m>>>>>>>>>> Create application directory <<<<<<<<<<\e[0m"
+print_head "Create application directory"
   rm -rf /app
   mkdir /app
 
-  echo -e "\e[36m>>>>>>>>>> download cart content <<<<<<<<<<\e[0m"
+print_head "download cart content"
   curl -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip
   cd /app
 
-  echo -e "\e[36m>>>>>>>>>> unzip user content <<<<<<<<<<\e[0m"
+print_head "unzip user content"
   unzip /tmp/${component}.zip
   cd /app
 
-  echo -e "\e[36m>>>>>>>>>> Nodejs dependencies <<<<<<<<<<\e[0m"
+print_head "Nodejs dependencies"
   npm install
 
-  echo -e "\e[36m>>>>>>>>>> copy user system file <<<<<<<<<<\e[0m"
+print_head "copy user system file"
   cp ${script_path}/${component}.service /etc/systemd/system/${component}.service
 
-  echo -e "\e[36m>>>>>>>>>> start user service <<<<<<<<<<\e[0m"
+print_head "start user service"
   systemctl daemon-reload
   systemctl enable ${component}
   systemctl restart ${component}
-
+  schema_setup
 }
