@@ -54,6 +54,7 @@ func_systemd_setup(){
 }
 
 func_nodejs(){
+
 func_print_head "Configuring Nodejs repos"
   dnf module disable nodejs -y
   dnf module enable nodejs:18 -y
