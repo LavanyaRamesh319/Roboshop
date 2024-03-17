@@ -18,7 +18,6 @@ func_schema_setup(){
   mongo --host mongodb-dev.devopz1.online </app/schema/${component}.js
   fi
   if ["${schema_setup}"=="mysql" ]; then
-
   func_print_head "install mysql"
   dnf install mysql -y
 
@@ -75,11 +74,20 @@ func_print_head "Nodejs dependencies"
 func_java(){
   func_print_head "Install Maven"
   dnf install maven -y
-
+  if [ $? -eq 0]; then
+    echo -e "\e[32mSUCCESS\e[0m"
+    else
+      echo -e "\e32mFAILURE\e[0m"
+  fi
   func_app_prereq
 
   func_print_head "download maven dependencies"
   mvn clean package
+  if [ $? -eq 0]; then
+      echo -e "\e[32mSUCCESS\e[0m"
+      else
+      echo -e "\e32mFAILURE\e[0m"
+  fi
   mv target/${component}-1.0.jar ${component}.jar
 
   func_schema_setup
