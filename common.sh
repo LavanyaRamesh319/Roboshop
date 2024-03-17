@@ -74,16 +74,17 @@ func_print_head "Nodejs dependencies"
 func_java(){
   func_print_head "Install Maven"
   dnf install maven -y
-  if [ $? -eq 0]; then
+  if [ $? -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"
     else
-      echo -e "\e32mFAILURE\e[0m"
+    echo -e "\e32mFAILURE\e[0m"
   fi
+
   func_app_prereq
 
   func_print_head "download maven dependencies"
   mvn clean package
-  if [ $? -eq 0]; then
+  if [ $? -eq 0 ]; then
       echo -e "\e[32mSUCCESS\e[0m"
       else
       echo -e "\e32mFAILURE\e[0m"
