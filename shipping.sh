@@ -9,5 +9,5 @@ if [ -z $mysql_root_password ]; then
 fi
 
 component="shipping"
-schema_setuo=mysql
+schema_setup=mysql
 func_java
