@@ -10,4 +10,4 @@ fi
 
 component="shipping"
 schema_setuo=mysql
-func_java()
+func_java
