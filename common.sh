@@ -95,7 +95,6 @@ func_print_head "Nodejs dependencies"
   npm install
   func_status_check $?
 
-
   func_schema_setup
   func_systemd_setup
 
@@ -103,9 +102,8 @@ func_print_head "Nodejs dependencies"
 
 func_java(){
   func_print_head "Install Maven"
-  dnf install maven -y
+  dnf install maven -y >/tmp/roboshop.log
   func_status_check $?
-
 
   func_app_prereq
 
