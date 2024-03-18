@@ -46,7 +46,7 @@ fi
 func_app_prereq(){
 
   func_print_head "create application user"
-  useradd ${app_user} >/tmp/roboshop.log
+  useradd ${app_user} &>/tmp/roboshop.log
     func_status_check $?
 
 
@@ -103,7 +103,7 @@ func_print_head "Nodejs dependencies"
 
 func_java(){
   func_print_head "Install Maven"
-  dnf install maven -y >/tmp/roboshop.log
+  dnf install maven -y &>/tmp/roboshop.log
   func_status_check $?
 
   func_app_prereq
