@@ -85,7 +85,7 @@ func_nodejs(){
 func_print_head "Configuring Nodejs repos"
   dnf module disable nodejs -y &>>$log_file
   dnf module enable nodejs:18 -y &>>$log_file
-
+    func_status_check $?
 func_print_head "Install Nodejs"
   dnf install nodejs -y &>>$log_file
   func_status_check $?
