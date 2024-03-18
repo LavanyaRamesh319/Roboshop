@@ -18,28 +18,28 @@ func_status_check(){
 func_schema_setup(){
   if [ "$schema_setup" == "mongo" ]; then
   func_print_head  "Copy mongodb"
-  cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo
+  cp ${script_path}/mongo.repo /etc/yum.repos.d/mongo.repo &>>$log_file
     func_status_check $?
 
 
   func_print_head  "Install mongodb"
-  dnf install mongodb-org-shell -y
+  dnf install mongodb-org-shell -y &>>$log_file
     func_status_check $?
 
 
   func_print_head  "Load schema"
-  mongo --host mongodb-dev.devopz1.online </app/schema/${component}.js
+  mongo --host mongodb-dev.devopz1.online </app/schema/${component}.js &>>$log_file
     func_status_check $?
 
   fi
   if ["${schema_setup}"=="mysql" ]; then
   func_print_head "install mysql"
-  dnf install mysql -y
+  dnf install mysql -y &>>$log_file
     func_status_check $?
 
 
   func_print_head "Load schema"
-  mysql -h mysql-dev.devopz1.online -uroot -p${mysql_root_password} < /app/schema/${component}.sql
+  mysql -h mysql-dev.devopz1.online -uroot -p${mysql_root_password} < /app/schema/${component}.sql &>>$log_file
     func_status_check $?
 fi
 }
@@ -52,30 +52,30 @@ func_app_prereq(){
 
 
   func_print_head "create application directory"
-  rm -rf /app
-  mkdir /app
+  rm -rf /app &>>$log_file
+  mkdir /app &>>$log_file
   func_status_check $?
 
   func_print_head "Download application content"
-  curl -L -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip
+  curl -L -o /tmp/${component}.zip https://roboshop-artifacts.s3.amazonaws.com/${component}.zip &>>$log_file
     func_status_check $?
 
   func_print_head "extract application content"
   cd /app
-  unzip /tmp/${component}.zip
+  unzip /tmp/${component}.zip &>>$log_file
     func_status_check $?
 
 }
 
 func_systemd_setup(){
         func_print_head "setup systemd service"
-         cp ${script_path}/${component}.service /etc/systemd/system/${component}.service
+         cp ${script_path}/${component}.service /etc/systemd/system/${component}.service &>>$log_file
           func_status_check $?
 
          func_print_head "start ${component} service"
-         systemctl daemon-reload
-         systemctl enable ${component}
-         systemctl restart ${component}
+         systemctl daemon-reload &>>$log_file
+         systemctl enable ${component} &>>$log_file
+         systemctl restart ${component} &>>$log_file
          func_status_check $?
 
 }
@@ -83,18 +83,18 @@ func_systemd_setup(){
 func_nodejs(){
 
 func_print_head "Configuring Nodejs repos"
-  dnf module disable nodejs -y
-  dnf module enable nodejs:18 -y
+  dnf module disable nodejs -y &>>$log_file
+  dnf module enable nodejs:18 -y &>>$log_file
 
 func_print_head "Install Nodejs"
-  dnf install nodejs -y
+  dnf install nodejs -y &>>$log_file
   func_status_check $?
 
 
 func_app_prereq
 
 func_print_head "Nodejs dependencies"
-  npm install
+  npm install &>>$log_file
   func_status_check $?
 
   func_schema_setup
@@ -110,9 +110,9 @@ func_java(){
   func_app_prereq
 
   func_print_head "download maven dependencies"
-  mvn clean package
+  mvn clean package &>>$log_file
   func_status_check $?
-  mv target/${component}-1.0.jar ${component}.jar
+  mv target/${component}-1.0.jar ${component}.jar &>>$log_file
 
   func_schema_setup
   func_systemd_setup
