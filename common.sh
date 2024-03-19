@@ -33,14 +33,14 @@ func_schema_setup(){
     func_status_check $?
 
   fi
-  if ["$schema_setup" == "mysql" ]; then
+  if [ "$schema_setup" == "mysql" ]; then
   func_print_head "install mysql"
   dnf install mysql -y &>>$log_file
     func_status_check $?
 
 
   func_print_head "Load schema"
-  mysql -h mysql-dev.devopz1.online -uroot -p${mysql_root_password} < /app/schema/${component}.sql &>>$log_file
+  mysql -h mysql-dev.devopz1.online -uroot -p${mysql_root_password} < /app/schema/shipping.sql &>>$log_file
     func_status_check $?
 fi
 }
