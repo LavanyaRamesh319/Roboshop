@@ -14,7 +14,7 @@ func_print_head "update listen address"
 sed -i -e 's|127.0.0.1|0.0.0.0|' /etc/mongod.conf &>>$log_file
 func_status_check $?
 
-func_print_head "start and enable mongodb"
+func_print_head "start and enable mongodb "
 systemctl enable mongod &>>$log_file
 systemctl restart mongod &>>$log_file
 func_status_check $?

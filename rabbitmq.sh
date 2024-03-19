@@ -21,7 +21,7 @@ func_print_head "install rabbitmq and erlang"
 dnf install erlang rabbitmq-server -y &>>$log_file
 func_status_check $?
 
-func_print_head "start rabbitmq"
+func_print_head "start rabbitmq "
 systemctl enable rabbitmq-server &>>$log_file
 systemctl restart rabbitmq-server &>>$log_file
 func_status_check $?
