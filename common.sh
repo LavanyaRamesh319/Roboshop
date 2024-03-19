@@ -33,7 +33,7 @@ func_schema_setup(){
     func_status_check $?
 
   fi
-  if ["${schema_setup}"=="mysql" ]; then
+  if ["$schema_setup" == "mysql" ]; then
   func_print_head "install mysql"
   dnf install mysql -y &>>$log_file
     func_status_check $?
@@ -80,7 +80,6 @@ func_systemd_setup(){
          systemctl enable ${component} &>>$log_file
          systemctl restart ${component} &>>$log_file
          func_status_check $?
-
 }
 
 func_nodejs(){
@@ -89,10 +88,10 @@ func_print_head "Configuring Nodejs repos"
   dnf module disable nodejs -y &>>$log_file
   dnf module enable nodejs:18 -y &>>$log_file
     func_status_check $?
+
 func_print_head "Install Nodejs"
   dnf install nodejs -y &>>$log_file
   func_status_check $?
-
 
 func_app_prereq
 
@@ -102,7 +101,6 @@ func_print_head "Nodejs dependencies"
 
   func_schema_setup
   func_systemd_setup
-
 }
 
 func_java(){
